@@ -37,7 +37,7 @@ public class Main2Activity extends AppCompatActivity {
     TextView textView;
     ProgressDialog progressDialog;
 
-    TextToSpeech sp ;
+    TextToSpeech sp ; //""
     int result ;
     String speak = "";
 
