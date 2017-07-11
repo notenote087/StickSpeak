@@ -48,6 +48,7 @@ public class Main2Activity extends AppCompatActivity {
         if(sp !=null){
             sp.stop();
             sp.shutdown();
+
         }
         super.onPause();
     }
@@ -69,9 +70,9 @@ public class Main2Activity extends AppCompatActivity {
         //spinnerTran = (Spinner) findViewById(R.id.spinnerTran);
 
         final Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerTran);
-        final String[] Language = getResources().getStringArray(R.array.lang1);
+        final String[] LanguageTarget = getResources().getStringArray(R.array.lang1);
 
-        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,Language);
+        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,LanguageTarget);
 
         spinnerLanguage.setAdapter(adapterLanguage);
 /*
@@ -93,31 +94,31 @@ public class Main2Activity extends AppCompatActivity {
 
 
                 switch (Language){
-                    case "en" : targetLanguage = Language ;
+                    case "English" : targetLanguage = "en" ;
                         break;
-                    case "ja" : targetLanguage = Language ;
+                    case "Japan" : targetLanguage = "ja" ;
                         break;
-                    case "zh-CN" : targetLanguage = Language ;
+                    case "China" : targetLanguage = "zh-CN" ;
                         break;
-                    case "th" : targetLanguage = Language ;
+                    case "Thailand" : targetLanguage = "th" ;
                         break;
                 }
 
 
 
-                sp=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                sp = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     @Override
                     public void onInit(int status) {
                         if(status != TextToSpeech.ERROR) {
                             sp.setLanguage(Locale.UK);
                             switch (Language){
-                                case "en" : result = sp.setLanguage(Locale.UK); ;
+                                case "English" : result = sp.setLanguage(Locale.UK);
                                     break;
-                                case "ja" : result = sp.setLanguage(Locale.JAPAN); ;
+                                case "Japan" : result = sp.setLanguage(Locale.JAPAN);
                                     break;
-                                case "zh-CN" : result = sp.setLanguage(Locale.CHINA); ;
+                                case "China" : result = sp.setLanguage(Locale.CHINA);
                                     break;
-                                case "th" : result = sp.setLanguage(Locale.FRENCH); ; // Not support THAI
+                                case "Thailand" : result = sp.setLanguage(new Locale("th"));  // Not support Locale.THAI
                                     break;
                             }
                         }
@@ -125,16 +126,6 @@ public class Main2Activity extends AppCompatActivity {
                 });
 
 
-/*
-                if (Language.equals("Thai")) {
-                    targetLanguage = "th";
-                }
-                if (Language.equals("English")) {
-                    targetLanguage = "en";
-                }
-
-
-*/
             }
             public void onNothingSelected(AdapterView<?> parent)
             {
@@ -146,9 +137,11 @@ public class Main2Activity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sp.speak(speak,TextToSpeech.QUEUE_FLUSH,null);
+                if (speak == null || speak == "")  Toast.makeText(Main2Activity.this,"ยังไม่กดแปลเลย", Toast.LENGTH_SHORT).show();
+               else sp.speak(speak,TextToSpeech.QUEUE_FLUSH,null);
             }
         });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
