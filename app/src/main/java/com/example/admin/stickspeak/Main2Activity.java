@@ -44,6 +44,15 @@ public class Main2Activity extends AppCompatActivity {
    //Spinner  spinnerTran;
 
     @Override
+    protected void onPause() {
+        if(sp !=null){
+            sp.stop();
+            sp.shutdown();
+        }
+        super.onPause();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -51,6 +60,7 @@ public class Main2Activity extends AppCompatActivity {
 
         final EditText editText = (EditText) findViewById(R.id.editText);
         final Button button = (Button) findViewById(R.id.button);
+        final Button button2 = (Button) findViewById(R.id.button2);
         textView = (TextView) findViewById(R.id.textView);
         textViewHandler = new Handler();
 
@@ -93,10 +103,13 @@ public class Main2Activity extends AppCompatActivity {
                         break;
                 }
 
-                sp = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener(){
+
+
+                sp=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     @Override
                     public void onInit(int status) {
-                        if (status == TextToSpeech.SUCCESS) {
+                        if(status != TextToSpeech.ERROR) {
+                            sp.setLanguage(Locale.UK);
                             switch (Language){
                                 case "en" : result = sp.setLanguage(Locale.UK); ;
                                     break;
@@ -129,6 +142,13 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.speak(speak,TextToSpeech.QUEUE_FLUSH,null);
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,7 +184,7 @@ public class Main2Activity extends AppCompatActivity {
                 public void run() {
                     if (textView != null) {
                         textView.setText(translation.getTranslatedText());
-                        speak = translation.getTranslatedText();
+                        speak = translation.getTranslatedText().toString();
                     }
                 }
             });
@@ -178,10 +198,7 @@ public class Main2Activity extends AppCompatActivity {
         }
     }
 
-    public void speak(){
-        sp.speak(speak,TextToSpeech.QUEUE_FLUSH,null);
 
-    }
 }
 
 /*
